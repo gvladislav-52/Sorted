@@ -120,11 +120,57 @@ void start_and_show_quickSort(int arr[], int low, int high)
         cout << arr[i] << " ";
 }
 
+#include <iostream>
+
+using namespace std;
+
+void Merge(int A[], int p, int q, int LenghtA)
+{
+    int count = p;
+    int left_index = 0,right_index  = 0;
+
+    int ascL = q - p +1;
+    int ascR = LenghtA-q;
+
+    int *left_arr = new int [ascL];
+    int *right_arr = new int [ascR];
+
+    for(int i = 0; i < ascL; i++)
+        left_arr[i] = A[p+i];
+    for(int i = 0; i < ascR; i++)
+        right_arr[i] = A[q+i+1];
+
+    while ((left_index < ascL)&&(right_index < ascR))
+    {
+        if (left_arr[left_index] <= right_arr[right_index])
+            A[count] = left_arr[left_index++];
+        else
+            A[count] = right_arr[right_index++];
+        count++;
+    }
+    while (left_index < ascL)
+        A[count++] = left_arr[left_index++];
+    while (right_index < ascR)
+        A[count++] = right_arr[right_index++];
+
+    delete [] left_arr;
+    delete [] right_arr;
+
+}
+void Sort(int A[], int p, int r) {
+    if (p < r) {
+        int q = (p + r) / 2;
+        Sort(A, p, q);
+        Sort(A, q + 1, r);
+        Merge(A, p, q, r);
+    }
+}
+
 
 int main()
 {
     const int LENGTH = 5;
-    int arr[LENGTH] = {5,3,8,4,1};
+    int arr[LENGTH] = {5, 2, 4, 6, 1};
     cout << "Sorter Buble: ";
     //bubbleSort(arr, LENGTH);
     cout << "\nSorter Select: ";
@@ -133,6 +179,11 @@ int main()
     //insertionSort(arr, LENGTH);
     cout << "\nSorter Smooth: ";
     //smooth::smoothSort(arr,LENGTH);
-    cout << "\nQuick Smooth: ";
-    start_and_show_quickSort(arr,0,LENGTH);
+    cout << "\nQuick Sorter: ";
+    //start_and_show_quickSort(arr,0,LENGTH);
+    cout  << "\nMerge Sorter: ";
+    Sort(arr, 0, LENGTH-1);
+    for (int i = 0; i < LENGTH; i++) {
+        cout << arr[i] << " ";
+    }
 }
